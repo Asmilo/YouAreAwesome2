@@ -13,6 +13,10 @@ struct ContentView: View {
     @State private var imageName = ""
     @State private var imageNumber = 0
     
+    @State private var messageNumber = 0
+    @State private var lastImageNumber = -1
+    @State private var lastMessageNumber = -1
+    
     var body: some View {
         VStack {
             Text(message)
@@ -28,17 +32,27 @@ struct ContentView: View {
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .shadow(radius: 10)
+                .animation(.easeInOut, value: imageName)
             
             Spacer()
             
             Button("Click Me") {
                 
+                
                 let messages = ["You are great", "I know, I am great", "Thanks, for being you", "Whats wrong with me ?"]
                 
-                message = messages[Int.random(in: 0...messages.count-1)]
+                repeat {
+                    messageNumber = Int.random(in: 0...messages.count-1)
+                } while messageNumber == lastMessageNumber
                 
-                imageNumber = Int.random(in: 0...9)
+                lastMessageNumber = messageNumber
+                message = messages[messageNumber]
                 
+                repeat {
+                    imageNumber = Int.random(in: 0...9)
+                } while imageNumber == lastImageNumber
+                
+                lastImageNumber = imageNumber
                 imageName = "image\(imageNumber)"
                 
 //                if imageNumber > 8 {
